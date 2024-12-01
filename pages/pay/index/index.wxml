@@ -1,0 +1,37 @@
+<view class="onlinepay">
+  <view class="onlinepay-bgbanner"></view>
+  <view class="onlinepay-content">
+    <view class="onlinepay-content-list">
+      <view class="onlinepay-content-list-name">
+        <text class="onlinepay-content-list-name-txt">闽南猪脚饭（高新店）</text>
+        <view class="onlinepay-content-list-name-zk">
+          <view class="onlinepay-content-list-name-zk-left">
+            <text class="onlinepay-content-list-name-zk-left-txt">折</text>
+            <text class="onlinepay-content-list-name-zk-left-content">PLUS会员78折</text>
+          </view>
+          <view class="onlinepay-content-list-name-zk-right">
+            <text class="onlinepay-content-list-name-zk-right-txt">折</text>
+            <text class="onlinepay-content-list-name-zk-right-content">会员78折</text>
+          </view>
+        </view>
+        <view class="onlinepay-content-list-name-line"></view>
+        <view class="merchant-submits-apply-info-input">
+                <input focus="true" type="digit" maxlength="10" placeholder="请输入金额"
+                       class="merchant-submits-apply-info-input-input"
+                        placeholder-style="color:#CCCCCC"
+                       bindinput="onAmountInput"
+                       value="{{amount}}"
+                />
+            </view>
+      </view>
+    </view>
+    <view class="onlinepay-content-symd">
+            <image src="/assets/images/novippay/select-plusvip.png" class="onlinepay-content-symd-select"></image>
+            <view class="onlinepay-content-symd-txt">使用100码豆</view>
+            <view class="onlinepay-content-symd-warn">使用码豆可以抵扣并为商家投票哦～</view>
+        </view>
+  </view>
+  <view class="onlinepay-btn">
+    <button class="onlinepay-btn-wrap">¥{{amount}} 码上结帐</button>
+  </view>
+</view>

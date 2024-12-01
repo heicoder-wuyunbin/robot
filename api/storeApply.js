@@ -15,3 +15,14 @@ export const storePageApi=(data)=>{
     data: data
   })
 } 
+/** 
+ * 获取店铺二维码
+ * @param {string} storeApplyId 
+  * @returns
+ */
+export function generateQrCodeByApplyIdApi(storeApplyId) {
+  return request({
+    url:`/merchant/store/generateQrCodeByApplyIdApi/${storeApplyId}`,
+    method:"GET"
+  });
+}
