@@ -1,0 +1,17 @@
+<view class="shopdetail">
+  <view class="shopdetail-banner">
+    <image mode="aspectFill" src="{{mystore.coverImage}}" class="shopdetail-banner-img"></image>
+  </view>
+  <view class="shopdetail-select">
+    <view bindtap="onClickSelectIndex" data-index="0" class="shopdetail-select-item {{selectIndex == 0 ? 'shopdetail-select-item-active' : ''}}">商家</view>
+    <view bindtap="onClickSelectIndex" data-index="1" class="shopdetail-select-item {{selectIndex == 1 ? 'shopdetail-select-item-active' : ''}}">评价</view>
+  </view>
+  <view hidden="{{selectIndex!=0}}">
+    <import src="/pages/shopdetail/shopdetail/shopdetail.wxml"/>
+    <template is="shopdetail" data="{{mystore}}"/>
+  </view>
+  <view hidden="{{selectIndex!=1}}">
+    <import src="/pages/shopdetail/comment/comment.wxml"/>
+    <template is="comment" data="{{commentList}}"/>
+  </view>
+</view>

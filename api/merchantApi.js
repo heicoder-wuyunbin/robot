@@ -4,6 +4,13 @@ export function getMerchantPage(params) {
     return request.post(`/merchant/store/page`, params);
 }
 
-export function getNearbyPage(params) {
-    return request.post(`/merchant/store/nearbyPage`, params);
+/** 
+ * 获取店铺信息
+ */
+export function getStoreInfoApi(data) {
+  return request({
+    url:`/merchant/store/getStoreInfo`,
+    method:"POST",
+    data:data
+  });
 }

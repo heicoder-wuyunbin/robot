@@ -1,0 +1,21 @@
+<template name="shopdetail">
+  <view class="shopdetail">
+    <!-- 商家 -->
+    <view>
+      <view class="shopdetail-weizhi">
+        <view class="shopdetail-weizhi-wrap">
+          <view class="shopdetail-weizhi-wrap-name">
+            <text class="shopdetail-weizhi-wrap-name-txt">{{mystore.storeName}}</text>
+            <text class="shopdetail-weizhi-wrap-name-jl">{{mystore.distance}}km</text>
+          </view>
+          <view class="shopdetail-weizhi-wrap-line"></view>
+          <view class="shopdetail-weizhi-wrap-address">
+            <image src="/assets/images/shopdetail/weizhi.png" class="shopdetail-weizhi-wrap-address-leftimg"></image>
+            <text bindtap="onClickOpenMap" data-store="{{mystore}}" class="shopdetail-weizhi-wrap-address-txt">{{mystore.province}}-{{mystore.city}}-{{mystore.area}}-{{mystore.address}}</text>
+            <image bindtap="onClickPhone" data-phone="{{mystore.phone}}" src="/assets/images/shopdetail/tel.png" class="shopdetail-weizhi-wrap-address-rightimg"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

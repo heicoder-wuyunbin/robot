@@ -1,150 +1,214 @@
+import request from '@/utils/request'
 import {
-    isLogin
+  isLogin
 } from '@/utils/common'
-import {getNearbyPage} from "@/api/merchantApi";
-
 Page({
-    data: {
-        indicatorColor: '#fff',
-        indicatorActiveColor: '#FD4D7D',
-        indicatorNavColor: '#D8D8D8',
-        indicatorActiveNavColor: '#F02230',
-        selectIndex: 2,
-        adData: [],
-        swiperData: [],
-        navData: [],
-        store_list: [],
-        zh_page: 1,
-        zh_size: 10,
-        zh_total: 0,
-        zh_totalPage: 0,
-        latitude: '', // 纬度
-        longitude: '', // 经度
-        address: '正在获取您的地址',
-        h5ListHeight: 0,
-        appListHeight: 0,
-    },
-    onLoad() {
-        this.getLocationAndData();
-        //this.getBannerData();
-    },
-    onReachBottom() {
-        if (this.data.zh_page < this.data.zh_totalPage) {
-            this.setData({
-                zh_page: this.data.zh_page + 1
-            });
-            this.getShopData();
-        } else {
-            wx.showToast({
-                title: '已经到底部了',
-                icon: 'none'
-            });
-        }
-    },
-    onPullDownRefresh() {
+  data: {
+    indicatorColor: '#fff',
+    indicatorActiveColor: '#FD4D7D',
+    indicatorNavColor: '#D8D8D8',
+    indicatorActiveNavColor: '#F02230',
+    selectIndex: 2,
+    adData: [],
+    swiperData: [],
+    navData: [],
+    store_list: [],
+    zh_page: 1,
+    zh_size: 10,
+    zh_total: 0,
+    zh_totalPage: 0,
+    latitude: '', // 纬度
+    longitude: '', // 经度
+    address: '正在获取您的地址',
+    h5ListHeight: 0,
+    appListHeight: 0,
+  },
+  onLoad() {
+    this.getLocationAndData();
+    //this.getBannerData();
+  },
+  onReachBottom() {
+    if (this.data.zh_page < this.data.zh_totalPage) {
+      this.setData({
+        zh_page: this.data.zh_page + 1
+      });
+      this.getShopData();
+    } else {
+      wx.showToast({
+        title: '已经到底部了',
+        icon: 'none'
+      });
+    }
+  },
+  onPullDownRefresh() {
+    this.setData({
+      store_list: [],
+      zh_page: 1
+    });
+    this.getShopData();
+    wx.stopPullDownRefresh();
+  },
+
+  getLocationAndData() {
+    wx.getLocation({
+      type: 'wgs84',
+      success: (res) => {
+        console.log(res)
         this.setData({
-            store_list: [],
-            zh_page: 1
+          latitude: res.latitude,
+          longitude: res.longitude
         });
         this.getShopData();
-        wx.stopPullDownRefresh();
-    },
-
-    getLocationAndData() {
-        wx.getLocation({
-            type: 'wgs84',
-            success: (res) => {
-                console.log(res)
-                this.setData({
-                    latitude: res.latitude,
-                    longitude: res.longitude
-                });
-                this.getShopData();
-                this.getAddressFromCoords();
-            },
-            fail: (res) => {
-                console.log(res)
-            },
+        this.getAddressFromCoords();
+      },
+      fail: (res) => {
+        console.log(res)
+      },
+    });
+  },
+  getAddressFromCoords() {
+    wx.request({
+      url: `member/map/getAddress/${this.data.longitude}/${this.data.latitude}/`,
+      success: (res) => {
+        const {
+          status,
+          data
+        } = res.data;
+        this.setData({
+          address: status.flag ? data.addressComponent.district : '',
         });
-    },
-    getAddressFromCoords() {
+      },
+    });
+  },
 
-    },
-
-    pageTotal(rowCount, pageSize) {
-        if (!rowCount) return 0;
-        return Math.ceil(rowCount / pageSize);
-    },
-    navigateToSearchResult(item) {
-        if (item.id) {
-            wx.navigateTo({
-                url: `../searchresult/searchresult?flag=1&id=${item.id}&name=${item.name}`,
-            });
-        }
-    },
-    scanCode() {
-        isLogin()
-        wx.scanCode({
-            success: (res) => {
-                wx.navigateTo({
-                    url: res.result.split('#')[1]
-                });
-            },
-        });
-    },
-    openWXSM() {
-        wx.hideLoading();
-        jweixin.scanQRCode({
-            needResult: 1,
-            success: (res) => {
-              console.log('扫码')
-              console.log(res.result)
-                wx.navigateTo({
-                    url: res.result
-                });
-            },
-        });
-    },
-    getAdData() {
-
-    },
-    getBannerData() {
-
-    },
-    getNavData() {
-
-    },
-    getShopData() {
-        getNearbyPage({
-            latitude: this.data.latitude,
-            longitude: this.data.longitude,
-            distance: 100
-        }).then(res => {
-            if (res.success) {
-                const { records, total, size, current, pages } = res.data;
-                this.setData({
-                    store_list: this.data.zh_page === 1
-                        ? records
-                        : [...this.data.store_list, ...records],
-                    zh_total: total,
-                    zh_size: size,
-                    zh_page: current,
-                    zh_totalPage: pages
-                });
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-    },
-    onClickscanCode(){
-        wx.scanCode({
-            onlyFromCamera: true,
-            success (res) {
-                console.log(res)
-                wx.navigateTo({
-                  url: res.result
-              });
-            }
-        })
+  pageTotal(rowCount, pageSize) {
+    if (!rowCount) return 0;
+    return Math.ceil(rowCount / pageSize);
+  },
+  navigateToSearchResult(item) {
+    if (item.id) {
+      wx.navigateTo({
+        url: `../searchresult/searchresult?flag=1&id=${item.id}&name=${item.name}`,
+      });
     }
+  },
+  scanCode() {
+    isLogin()
+    wx.scanCode({
+      success: (res) => {
+        wx.navigateTo({
+          url: res.result.split('#')[1]
+        });
+      },
+    });
+  },
+  openWXSM() {
+    wx.hideLoading();
+    jweixin.scanQRCode({
+      needResult: 1,
+      success: (res) => {
+        wx.navigateTo({
+          url: res.resultStr.split('#')[1]
+        });
+      },
+    });
+  },
+  getAdData() {
+    request({
+      url: `ad/ad/index`,
+      method: 'POST',
+      data: {
+        area_list: this.data.address
+      },
+      success: (res) => {
+        const {
+          status,
+          data
+        } = res.data;
+        this.setData({
+          adData: status.flag ? data : []
+        });
+      },
+    });
+  },
+  getBannerData() {
+    showLoading({
+      title: '加载中'
+    });
+    request({
+      url: `/ad/banner/index`,
+      method: 'POST',
+    }).then(res => {
+      const {
+        status,
+        data
+      } = res.data;
+      this.setData({
+        swiperData: status.flag ? data : []
+      });
+    }).catch(err => {
+      console.log(err)
+      wx.hideLoading()
+    })
+
+  },
+  getNavData() {
+    request({
+      url: `merchant/industry/index`,
+      success: (res) => {
+        const {
+          status,
+          data
+        } = res.data;
+        this.setData({
+          navData: status.flag ? data : []
+        });
+      },
+      complete: this.getAdData,
+    });
+  },
+  getShopData() {
+    request({
+        url: `/merchant/store/getNearbyPage`,
+        method: 'POST',
+        data: {
+          latitude: this.data.latitude,
+          longitude: this.data.longitude,
+          current: this.data.zh_page,
+          pageSize: this.data.zh_size,
+          distance: 100
+        }
+      })
+      .then(res => {
+        const {
+          records,total,size,pages
+        } = res.data;
+        if (res.success) {
+          this.setData({
+            store_list: records,
+            zh_total: total,
+            zh_totalPage: this.pageTotal(total, size),
+          });
+          console.log(123);
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  onClickscanCode(){
+    wx.scanCode({
+      onlyFromCamera:true,
+      success(res){
+        console.log(res);
+        wx.navigateTo({
+          url: res.result
+        });
+      }
+    })
+  },
+  onClicksToShopDetail(event){
+    const id = event.currentTarget.key.id;
+    console.log(id);
+  }
 });

@@ -1,5 +1,8 @@
 {
   "pages": [
+    "pages/shopdetail/index",
+    "pages/shopdetail/shopdetail/shopdetail",
+    "pages/shopdetail/comment/comment",
     "pages/index/index",
     "pages/about/index",
     "pages/pay/index/index",

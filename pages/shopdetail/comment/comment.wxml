@@ -1,0 +1,25 @@
+<template name="comment">
+  <view class="no-data" wx:if="{{commentList.length == 0}}">
+    暂无数据
+  </view>
+  <view wx:else>
+    <view wx:for="{{commentList}}" wx:key="id" class="shopdetail-pj-item">
+      <image src="/assets/images/shopdetail/avatar.png" class="shopdetail-pj-item-avatar"></image>
+      <view class="shopdetail-pj-item-info">
+        <view class="shopdetail-pj-item-info-wrap">
+          <view class="shopdetail-pj-item-info-wrap-name">
+            <text class="shopdetail-pj-item-info-wrap-name-top">昵称</text>
+            <text class="shopdetail-pj-item-info-wrap-name-bottom">{{item.naickname}}</text>
+          </view>
+          <view class="shopdetail-pj-item-info-wrap-zan">
+            <text class="shopdetail-pj-item-info-wrap-zan-num">{{item.commend}}</text>
+            <image src="/assets/images/shopdetail/zan.png" class="shopdetail-pj-item-info-wrap-zan-img"></image>
+          </view>
+        </view>
+        <view class="shopdetail-pj-item-info-content">{{item.content}}</view>
+        <view wx:if="{{index + 1 !== list.length}}" class="shopdetail-pj-item-info-line"></view>
+      </view>
+    </view>
+  </view>
+
+</template>
